@@ -1,0 +1,94 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-input {
+    margin: 20px;
+    transition: 0.3s ease-in-out;
+}
+
+.form-input:hover {
+    scale: 1.02;
+}
+
+.form-input input {
+    font-weight: 400;
+    font-size: 1em;
+    width: 400px;
+    height: 50px;
+    border-radius: 15px;
+    text-align: center;
+    border: 0.5px solid rgba(0, 0, 0, 0.394);
+}
+
+.sign-button {
+    background-color: rgb(0, 193, 120);
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 3px 3px 10px rgba(0, 128, 0, 0.305);
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.sign-button:hover {
+    background-color: rgba(124, 150, 124, 0.092);
+    box-shadow: none;
+}
+
+.form-background {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.274);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 550px;
+    padding: 50px;
+    border: none;
+    margin-bottom: 100px;
+    border-radius: 30px;
+}
+
+.form-component {
+    height: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-image {
+    display: flex;
+    align-items: center;
+}
+.form-image h1 {
+    size: 0.5em;
+}
+.form-image img {
+    width: 60px;
+    height: 60px;
+}
+
+.page-link {
+    color: green;
+}
+
+@media (max-width: 550px) {
+    .form-input input {
+        width: 300px;
+    }
+
+    .form-component {
+        height: 500px;
+        padding-top: 100px;
+    }
+
+    .form-background {
+        width: 250px;
+        margin-bottom: 0px;
+    }
+}

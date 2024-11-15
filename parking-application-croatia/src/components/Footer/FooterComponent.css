@@ -1,0 +1,32 @@
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    background-color: white;
+}
+
+.footer-icon {
+    color: green;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+    width: 20px;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
+
+@media (max-width: 550px) {
+    .footer-container {
+        display: flex;
+        flex-direction: column;
+    }
+}

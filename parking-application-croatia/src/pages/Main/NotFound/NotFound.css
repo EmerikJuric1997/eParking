@@ -1,0 +1,28 @@
+.error-container {
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-container img {
+    width: 800px;
+    height: auto;
+}
+
+.error-back {
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.error-back:hover {
+    color: green;;
+}
+
+@media (max-width: 750px) {
+    .error-container img {
+        width: 400px;
+    }
+}

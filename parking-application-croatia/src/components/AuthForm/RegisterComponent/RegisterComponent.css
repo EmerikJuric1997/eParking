@@ -1,0 +1,88 @@
+.form-container-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-input-register {
+    margin: 20px;
+    transition: 0.3s ease-in-out;
+}
+
+.form-input-register:hover {
+    scale: 1.02;
+}
+
+.form-input-register input {
+    font-weight: 400;
+    font-size: 1em;
+    width: 400px;
+    height: 50px;
+    border-radius: 15px;
+    text-align: center;
+    border: 0.5px solid rgba(0, 0, 0, 0.394);
+}
+
+.sign-button-register {
+    background-color: rgb(0, 193, 120);
+    font-weight: 600;
+    margin-top: 20px;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 3px 3px 10px rgba(0, 128, 0, 0.305);
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.sign-button-register:hover {
+    background-color: rgba(124, 150, 124, 0.092);
+    box-shadow: none;
+}
+
+.form-background-register {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.274);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 550px;
+    padding: 50px;
+    border: none;
+    margin-bottom: 100px;
+    border-radius: 30px;
+}
+
+.form-component-register {
+    height: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-image-register {
+    display: flex;
+    align-items: center;
+}
+.form-image-register h1 {
+    size: 0.5em;
+}
+.form-image-register img {
+    width: 60px;
+    height: 60px;
+}
+
+@media (max-width: 550px) {
+    .form-input-register input {
+        width: 250px;
+    }
+
+    .form-component-register {
+        padding-top: 150px;
+        padding-bottom: 150px;
+        height: 1000px;
+    }
+    .form-background-register {
+        width: 250px;
+    }
+}
