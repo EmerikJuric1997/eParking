@@ -1,0 +1,162 @@
+.parking-container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 150px;
+    padding-bottom: 100px;
+}
+
+.parking-box {
+    display: flex;
+    margin: auto;
+    width: 800px;
+    height: 400px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 40px;
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.243);
+}
+
+.parking-background {
+    background-color: white;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.182);
+    border-radius: 40px;
+    margin-top: 100px;
+    margin-left: 40px;
+}
+
+.parking-time {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 0px;
+}
+
+.parking-text {
+    font-size: 20px;
+}
+
+.parking-timer {
+    font-size: 3em;
+    color: rgb(71, 218, 149);
+}
+.parking-payment-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.parking-input {
+    width: 200px;
+    height: 40px;
+    margin: 10px;
+    border-radius: 15px;
+    border: 0.1px solid rgb(56, 196, 115);
+    text-align: center;
+}
+.parking-input-box {
+    display: flex;
+}
+.parking-zone {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+.parking-zone-input {
+    padding-left: 20px;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: rgb(56, 196, 115);   
+    margin-right: 15px; 
+  }
+  .parking-zone-checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .paypal-button {
+    padding-top: 30px;
+  }
+  
+
+
+
+  @media (max-width: 1700px) {
+    .parking-container {
+        flex-direction: column;
+        padding-top: 20px;
+    }
+    .parking-box {
+        width: 800px;
+        margin-top: 20px;
+    }
+
+    .parking-background {
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+
+    .parking-zone label {
+        font-size: 10px;
+        padding-left: 5px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: rgb(56, 196, 115);   
+        margin-right: 0px;  
+      }
+
+      .parking-input {
+        width: 150px;
+        height: 40px;
+        margin: 10px;
+        border-radius: 15px;
+        border: 0.1px solid rgb(56, 196, 115);
+        text-align: center;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .parking-container {
+        flex-direction: column;
+        padding-top: 20px;
+    }
+    .parking-box {
+        width: 370px;
+        margin-top: 20px;
+    }
+
+    .parking-background {
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+
+    .parking-zone label {
+        font-size: 10px;
+        padding-left: 5px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: rgb(56, 196, 115);   
+        margin-right: 0px;  
+      }
+
+      .parking-input {
+        width: 150px;
+        height: 40px;
+        margin: 10px;
+        border-radius: 15px;
+        border: 0.1px solid rgb(56, 196, 115);
+        text-align: center;
+    }
+  }
