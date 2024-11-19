@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import './HeaderComponent.css'
 import { Link } from 'react-router-dom';
+import Store from '../../store/Store';
+import { observer } from 'mobx-react-lite';
 
-export default function HeaderComponent() {
-  const [user, setUser] = useState(true);
-  const [admin, setAdmin] = useState(true)
+const HeaderComponent = observer(() => {
+  const [admin, setAdmin] = useState(false)
   const [userModal, setUserModal] = useState(false)
 
   const toggleUserModal = () => {
@@ -20,15 +21,15 @@ export default function HeaderComponent() {
             eParking
           </Link>
         </div>
-        {!user &&
+        {Store.isAuthenticated === false &&
           <div className='sign-in-div'>
             <Link to="/signin" className='sign-in-button'>
               Prijavi se
             </Link>
           </div>}
-        {user &&
+        {Store.isAuthenticated === true &&
           <div>
-            <img className="profile-picture" src="https://scontent.fzag4-1.fna.fbcdn.net/v/t39.30808-6/417509472_3648645118716225_4509178964389876782_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHKWerc2eUExFoOPBYJxaHjB9RmkEeNHEQH1GaQR40cRBiVdZbnoc5pBJyvv_HuGYjNuGe5BiEEHFIw-kCZNA-2&_nc_ohc=aESyReestaoQ7kNvgGOzm8B&_nc_zt=23&_nc_ht=scontent.fzag4-1.fna&_nc_gid=ADja5RRNdrZCoS5SYj2tL3M&oh=00_AYAD6x0T1y8zIHxbKlRGDxlPz3iAwwTh85D_Esn1azhPsA&oe=673BBBF9" alt="Profile picture" onClick={toggleUserModal} />
+            <img className="profile-picture" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile picture" onClick={toggleUserModal} />
           </div>}
       </div>
       {userModal && (
@@ -57,7 +58,7 @@ export default function HeaderComponent() {
           </>
           )}
           <Link to="/" className='user-item'>
-            <div>
+            <div onClick={() => Store.logout()}>
               Odjavi se
             </div>
           </Link>
@@ -65,3 +66,6 @@ export default function HeaderComponent() {
     </>
   )
 }
+)
+
+export default HeaderComponent;

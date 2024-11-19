@@ -1,0 +1,224 @@
+.user-profile-picture {
+    width: 100px;
+    height: auto;
+    border-radius: 30px;
+    transition: 0.2s ease-in-out;
+}
+
+.user-profile-picture:hover {
+    border-radius: 50px;
+    opacity: 0.2;
+    cursor: pointer;
+}
+
+.user-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    padding-top: 50px;
+}
+
+.user-container-background {
+    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.219);
+    border-radius: 20px;
+    width: 30%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 60px;
+}
+
+.user-change-input {
+    width: 250px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.517);
+    text-align: center;
+}
+
+.input-heading {
+    line-height: 0px;
+    margin-top: 30px;
+    font-weight: 500;
+}
+
+.user-component-button {
+    margin-top: 20px;
+    height: 35px;
+    width: 70px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(62, 218, 124);
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.table-component-button-pay {
+    height: 35px;
+    width: 70px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+}
+
+.table-component-button-pay:hover {
+    background-color: aqua;
+    color: black;
+ }
+
+
+.table-component-button-delete {
+    height: 35px;
+    width: 70px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(241, 70, 70);
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.table-component-button-delete:hover {
+    background-color: rgb(27, 227, 107);
+    color: black;
+}
+
+.user-component-button:hover {
+    background-color: aqua;
+}
+
+.user-container-receipt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    height: 500px;
+    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.219);
+    border-radius: 20px;
+    margin-right: 60px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    margin-top: 30px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.233);
+    border-radius: 20px;
+    display: block;
+    height: 250px;
+    overflow-y: scroll;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+td,
+th {
+    border: 0px;
+    text-align: center;
+    height: 20px;
+    padding: 8px;
+    width: 200px;
+    border-color: rgba(0, 0, 0, 0.449);
+}
+
+tr:nth-child(even) {
+    background-color: rgba(226, 226, 226, 0.664);
+}
+
+
+table tr:first-child th:first-child {
+    border-top-left-radius: 0.5rem;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: 0.5rem;
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 0.5rem;
+}
+
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 0.5rem;
+}
+
+.user-container-fine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 93.5%;
+    height: 500px;
+    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.219);
+    border-radius: 20px;
+    margin-bottom: 70px;
+}
+
+.user-container-two {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #ffffff00;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #25da7686;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #25da76;
+}
+
+.user-container h1 {
+    margin-top: 40px;
+}
+.user-container-two h1 {
+    margin-top: 40px;
+}
+
+@media (max-width: 1400px) { 
+.user-container {
+    justify-content: center;
+    flex-direction: column;
+}
+
+.user-container-background {
+    width: 90%;
+    margin-left: 0px;
+}
+.user-change-input {
+    width: 100%;
+}
+
+.user-container-fine {
+    margin-bottom: 150px;
+}
+
+.user-container-receipt {
+    width: 90%;
+    margin-top: 50px;
+    margin-right: 0px;
+}
+}

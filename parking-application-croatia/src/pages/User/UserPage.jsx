@@ -1,9 +1,13 @@
 import React from 'react'
+import UserComponent from '../../components/User/UserComponent'
+import transition from '../../services/transition'
 
-export default function UserPage() {
+function UserPage() {
   return (
     <div>
-      USER
+      <UserComponent />
     </div>
   )
 }
+
+export default transition(UserPage)

@@ -1,8 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import './NotFound.css'
+import transition from '../../../services/transition';
 
-export default function NotFound() {
+  function NotFound() {
   const navigate = useNavigate();
   return (
     <div className='error-container'>
@@ -15,3 +16,5 @@ export default function NotFound() {
     </div>
   )
 }
+
+export default transition(NotFound);

@@ -1,9 +1,13 @@
 import React from 'react'
+import AdminComponent from '../../components/Admin/AdminComponent'
+import transition from '../../services/transition'
 
-export default function AdminPage() {
+function AdminPage() {
   return (
     <div>
-      admin
+      <AdminComponent />
     </div>
   )
 }
+
+export default transition(AdminPage)
