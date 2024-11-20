@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './HeaderComponent.css'
 import { Link } from 'react-router-dom';
 import Store from '../../store/Store';
@@ -6,7 +6,11 @@ import { observer } from 'mobx-react-lite';
 
 const HeaderComponent = observer(() => {
   const [admin, setAdmin] = useState(false)
-  const [userModal, setUserModal] = useState(false)
+  const [userModal, setUserModal] = useState(false);
+
+ useEffect(() => {
+   Store.fetchProfileImage()
+  }, [Store.profileImage])
 
   const toggleUserModal = () => {
     setUserModal(!userModal);
@@ -27,19 +31,19 @@ const HeaderComponent = observer(() => {
               Prijavi se
             </Link>
           </div>}
-        {Store.isAuthenticated === true &&
+        {Store.isAuthenticated === true && Store.user.profileimage &&
           <div>
-            <img className="profile-picture" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile picture" onClick={toggleUserModal} />
+            <img className="profile-picture" src={`/src/services/${Store.user.profileimage}`} alt="Profile picture" onClick={toggleUserModal} />
           </div>}
       </div>
       {userModal && (
         <div className='user-modal' onClick={toggleUserModal}>
-          <Link to="/user/:id" className='user-item'>
+          <Link to={`user/${Store.user.id}`} className='user-item'>
             <div>
               Profil
             </div>
           </Link>
-          <Link to="/parking/:id" className='user-item'>
+          <Link to={`parking/${Store.user.id}`} className='user-item'>
             <div>
               Parking
             </div>

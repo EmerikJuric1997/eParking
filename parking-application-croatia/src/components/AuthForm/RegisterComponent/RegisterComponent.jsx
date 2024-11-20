@@ -1,8 +1,15 @@
 import './RegisterComponent.css';
 import Store from '../../../store/Store';
 import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router';
 
 const RegisterComponent = observer(() => {
+
+    const navigate = useNavigate();
+
+    const handleRegister = async () => {
+        await Store.register(navigate);
+    };
 
     return (
         <div className='form-component-register'>
@@ -38,7 +45,7 @@ const RegisterComponent = observer(() => {
                             placeholder='E-mail'
                             type="email"
                             name="email"
-                            value={Store.email}
+                            value={Store.username}
                             onChange={(e) => Store.setUsername(e.target.value)}
                         />
                     </div>
@@ -72,7 +79,7 @@ const RegisterComponent = observer(() => {
                             onChange={(e) => Store.setSparePlate(e.target.value)}
                         />
                     </div>
-                    <button className='sign-button-register' onClick={() => Store.register()}>Registriraj se</button>
+                    <button className='sign-button-register' onClick={handleRegister}>Registriraj se</button>
                 </div>
             </div>
         </div>

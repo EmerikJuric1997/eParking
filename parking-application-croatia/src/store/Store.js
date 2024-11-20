@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import axios from 'axios';
+import { runInAction } from 'mobx';
 
 class Store {
     name = '';
@@ -8,6 +9,9 @@ class Store {
     password = '';
     licensePlate = '';
     sparePlate = '';
+    imageFile = null;
+    profileImage = "";
+    profileImagePreview = null; // Preview URL
     user = null;
     isAuthenticated = false;
     token = null;
@@ -60,6 +64,14 @@ class Store {
         this.sparePlate = value;
     }
 
+    setProfileImage(image) {
+        this.profileImage = image; // Store file for preview
+    }
+
+    setProfileImagePreview(preview) {
+        this.profileImagePreview = preview; // Save the preview URL
+    }
+
     validateSignInForm() {
         let isValid = true;
 
@@ -97,10 +109,10 @@ class Store {
         }
 
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        if (!this.email) {
+        if (!this.username) {
             this.errors.email = "Email je obavezan.";
             isValid = false;
-        } else if (!emailPattern.test(this.email)) {
+        } else if (!emailPattern.test(this.username)) {
             this.errors.email = "Unesite valjanu E-mail adresu.";
             isValid = false;
         }
@@ -134,15 +146,23 @@ class Store {
             localStorage.setItem("token", this.token);
             localStorage.setItem("user", JSON.stringify(this.user));
             if (navigate) {
-                navigate("/parking/:id");
+                navigate(`/parking/${this.user.id}`);
             }
         } catch (error) {
             this.validateSignInForm();
-            alert(error);
+            alert("Pogriješili ste E-mail ili lozinku", error);
+            errors = {
+                name: '',
+                surname: '',
+                username: '',
+                password: '',
+                licensePlate: '',
+                licensePlateOptional: ''
+            };
         }
     }
 
-    async register() {
+    async register(navigate) {
         try {
             await axios.post('http://localhost:5000/register', {
                 name: this.name,
@@ -151,7 +171,12 @@ class Store {
                 password: this.password,
                 licenseplate: this.licensePlate.toUpperCase(),
                 spareplate: this.sparePlate.toUpperCase(),
+                profileimage: "/uploads/1.jpg"
             });
+            await this.login();
+            if (navigate) {
+                navigate(`/parking/${this.user.id}`);
+            }
         } catch (error) {
             this.validateRegisterForm();
             console.error('Registration failed:', error);
@@ -173,12 +198,94 @@ class Store {
         this.isAuthenticated = false;
         this.user = null;
         this.token = null;
+        this.name = '';
+        this.surname = '';
+        this.username = '';
+        this.password = '';
+        this.licensePlate = '';
+        this.sparePlate = '';
 
         // Clear local storage
         localStorage.removeItem("token");
         localStorage.removeItem("user");
 
         if (navigate) navigate("/login");
+    }
+
+    async fetchUserById(id) {
+        try {
+            const response = await axios.get(`http://localhost:5000/user/${id}`);
+            runInAction(() => {
+                this.user = response.data; // Store user data in MobX
+                this.name = this.user.name;
+                this.username = this.user.username;
+                this.user.profileimage = this.user.profileimage.replace(/^data:image\/\w+;base64,/, "");
+            });
+            this.licensePlate = this.user.licenseplate.toUpperCase();
+        } catch (error) {
+            console.error("Failed to fetch user:", error);
+        }
+    }
+
+    async fetchProfileImage() {
+        if(this.user) {
+            try {
+                const response = await axios.get(`http://localhost:5000/user/${this.user.id}`);
+                runInAction(() => {
+                    this.user = response.data; // Store user data in MobX
+                    console.log(this.user.profileimage)
+                    this.user.profileiimage = this.user.profileimage.replace(/^data:image\/\w+;base64,/, "");
+                });
+            } catch (error) {
+                console.error("Failed to fetch user:", error);
+            }
+        }
+    }
+
+    async updateUser(id) {
+        try {
+            const response = await axios.put(`http://localhost:5000/user/${id}`, {
+                name: this.name,
+                username: this.username,
+                licenseplate: this.licensePlate.toUpperCase(),
+            });
+            if (this.profileImage) {
+                await this.uploadProfileImage(id)
+            }
+            await this.fetchUserById(id)
+        } catch (error) {
+            console.error("Failed to update user:", error);
+            throw error;
+        }
+    }
+
+    async uploadProfileImage(userId) {
+        if (!this.profileImage) {
+            console.error("No image selected for upload.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("profileimage", this.profileImage);
+
+        try {
+            const response = await axios.put(`http://localhost:5000/user/${userId}/image`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            runInAction(() => {
+                if (this.user) this.user.profileimage = response.data.imagePath; // Update local user image
+                this.profileImage = null; // Clear file reference
+            });
+        } catch (error) {
+            console.error("Failed to upload profile image:", error);
+        }
+    }
+
+
+    // Set profile image for upload
+    setProfileImage(file) {
+        this.profileImage = file;
     }
 }
 

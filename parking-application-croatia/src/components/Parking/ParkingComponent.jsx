@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import './ParkingComponent.css';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Store from '../../store/Store';
@@ -15,6 +16,12 @@ const ParkingComponent = observer(() => {
     const [time, setTime] = useState({
         hour: '', minute: ''
     });
+
+    let { id } = useParams();
+
+    useEffect(() => {
+        Store.fetchUserById(id)
+    }, [])
 
 
     const handleTime = event => {
