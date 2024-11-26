@@ -41,6 +41,10 @@
     font-size: 3em;
     color: rgb(71, 218, 149);
 }
+.parking-timer-zero{
+    font-size: 3em;
+    color: rgb(218, 71, 71);
+}
 .parking-payment-box {
     display: flex;
     flex-direction: column;

@@ -1,44 +1,68 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Tesseract from 'tesseract.js';
-import './CameraPage.css'
+import './CameraPage.css';
+import Store from '../../store/Store';
+import { observer } from 'mobx-react-lite';
+import NotFound from '../Main/NotFound/NotFound';
 
-const App = () => {
-  const videoRef1 = useRef(null);
-  const videoRef2 = useRef(null);
-  const canvasRef1 = useRef(null);
-  const canvasRef2 = useRef(null);
-  const [licensePlates, setLicensePlates] = useState([]);
+const CameraPage = observer(() => {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
 
-  // Start video stream for a given camera
-  const startVideoStream = async (videoRef, deviceId) => {
+  const startVideoStream = async (videoRef) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: deviceId ? { exact: deviceId } : undefined },
+        video: true,
       });
       videoRef.current.srcObject = stream;
-      videoRef.current.play();
+
+      videoRef.current.onloadedmetadata = () => {
+        videoRef.current.play();
+      };
     } catch (error) {
       console.error('Error accessing camera:', error);
     }
   };
 
-  // Capture image from video stream
+  const preprocessCanvas = (canvas) => {
+    const context = canvas.getContext('2d');
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+    const threshold = 128;
+    for (let i = 0; i < pixels.length; i += 4) {
+      const avg = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+      const value = avg > threshold ? 255 : 0;
+      pixels[i] = pixels[i + 1] = pixels[i + 2] = value;
+    }
+
+    context.putImageData(imageData, 0, 0);
+  };
+
   const captureImage = (videoRef, canvasRef) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    preprocessCanvas(canvas);
     return canvas.toDataURL('image/png');
   };
 
-  // Process image with Tesseract.js
+  const cleanLicensePlate = (text) => {
+    return text.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+  };
+
   const processImage = async (imageDataUrl) => {
     try {
-      const { data: { text } } = await Tesseract.recognize(imageDataUrl, 'eng');
-      const licensePlate = text.trim();
-      if (licensePlate) {
-        setLicensePlates((prev) => [...prev, licensePlate]);
+      const { data: { text } } = await Tesseract.recognize(imageDataUrl, 'eng', {
+        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+      });
+
+      const cleanedText = cleanLicensePlate(text.trim());
+      if (cleanedText) {
+        const cameraCheckPlate = cleanedText;
+        const zone = 1;
+        Store.validateParkingPayment(cameraCheckPlate, zone)
       }
     } catch (error) {
       console.error('Error processing image with Tesseract:', error);
@@ -46,49 +70,49 @@ const App = () => {
   };
 
   useEffect(() => {
-    const initializeCameras = async () => {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(device => device.kind === 'videoinput');
-      
-      if (videoDevices.length > 0) startVideoStream(videoRef1, videoDevices[0].deviceId);
-      if (videoDevices.length > 1) startVideoStream(videoRef2, videoDevices[1].deviceId);
+    const initializeCamera = async () => {
+      try {
+        startVideoStream(videoRef);
+      } catch (error) {
+        console.error('Error initializing camera:', error);
+      }
     };
 
-    initializeCameras();
+    initializeCamera();
 
     const interval = setInterval(() => {
-      const image1 = captureImage(videoRef1, canvasRef1);
-      const image2 = captureImage(videoRef2, canvasRef2);
+      if (videoRef.current) {
+        const image = captureImage(videoRef, canvasRef);
+        processImage(image);
+      }
+    }, 10000);
 
-      processImage(image1);
-      processImage(image2);
-    }, 10000); // 5 minutes
+    return () => {
+      const stream = videoRef.current?.srcObject;
 
-    return () => clearInterval(interval);
+      if (stream) stream.getTracks().forEach(track => track.stop());
+      clearInterval(interval);
+    };
   }, []);
 
   return (
-    <div>
-      <h1>Kamera za prepoznavanje tablica</h1>
-      <div className='camera-container'>
-        <div>
-          <video ref={videoRef1} style={{ width: '2000px', height: 'auto' }} />
-          <canvas ref={canvasRef1} style={{ display: 'none' }} />
+    <>
+      {Store.user.role === 'admin' &&
+        <div className="camera-container">
+          <h1>Kamera za prepoznavanje tablica</h1>
+          <div>
+            <div>
+              <video ref={videoRef} className='video' />
+              <canvas ref={canvasRef} className='canvas' />
+            </div>
+          </div>
         </div>
-        <div>
-          <video ref={videoRef2} style={{ width: '300px', height: 'auto' }} />
-          <canvas ref={canvasRef2} style={{ display: 'none' }} />
-        </div>
-      </div>
-      <h2>Prepoznate tablice:</h2>
-      <ul>
-        {licensePlates.map((plate, index) => (
-          <li key={index}>{plate}</li>
-        ))}
-      </ul>
-    </div>
+      }
+      {Store.user.role !== 'admin' &&
+        <NotFound />
+      }
+    </>
   );
-};
+});
 
-export default App;
-
+export default CameraPage;

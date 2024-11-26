@@ -1,0 +1,35 @@
+.camera-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 30px;
+}
+
+.camera-container h1 {
+    font-size: 3em;
+}
+
+.video { 
+    width: 1000px;
+    border-radius: 40px;
+}
+.canvas {
+    width: 1000x;
+    display: none;
+}
+
+@media (max-width: 1200px) { 
+    .camera-container h1 {
+        font-size: 1em;
+    }
+    
+    .video { 
+        width: 300px;
+        border-radius: 40px;
+    }
+    .canvas {
+        width: 300x;
+        display: none;
+    }
+    }

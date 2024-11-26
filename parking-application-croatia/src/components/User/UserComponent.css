@@ -58,6 +58,20 @@
     transition: 0.3s ease-in-out;
 }
 
+.user-component-button-save {
+    margin-top: 20px;
+    height: 35px;
+    width: 70px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background-color: rgb(49, 49, 49);
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
 .table-component-button-pay {
     height: 35px;
     width: 70px;
@@ -98,6 +112,10 @@
 
 .user-component-button:hover {
     background-color: aqua;
+}
+
+.user-component-button-save:hover {
+    background-color: rgb(87, 87, 87);
 }
 
 .user-container-receipt {
@@ -220,5 +238,19 @@ table tr:last-child td:first-child {
     width: 90%;
     margin-top: 50px;
     margin-right: 0px;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    margin-top: 30px;
+    width: 90%;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.233);
+    border-radius: 20px;
+    display: block;
+    height: 250px;
+    overflow-y: scroll;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
 }
 }

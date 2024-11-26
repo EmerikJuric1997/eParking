@@ -30,8 +30,8 @@ export default function HeroHomeComponent() {
                         </h1>
                         <p>
                             Uživajte u jednostavnom i brzom parkiranju bez stresa! Naša aplikacija
-                            vam omogućava da pronađete slobodna parking mesta, rezervišete unapred i
-                            platite jednim klikom. Zaboravite na gužve i vreme provedeno u traženju parkinga
+                            vam omogućava da pronađete slobodna parking mjesta, rezervirajte unaprijed i
+                            platite jednim klikom. Zaboravite na gužve i vrijeme provedeno u traženju parkinga
                             - prepustite to nama!
                         </p>
                     </div>
@@ -45,10 +45,10 @@ export default function HeroHomeComponent() {
                             Pametno parkiranje u svakom trenutku
                         </h1>
                         <p>
-                            Vaše vreme je dragoceno - ne trošite ga na traženje parkinga! Naša aplikacija
-                            vam omogućava pristup realnim informacijama o dostupnim mestima u vašoj blizini,
-                            brzo plaćanje i podsećanja na istekao parking. Uživajte u slobodnom i
-                            organizovanom parkiranju uz našu pomoć.
+                            Vaše vrijeme je dragocijeno - ne trošite ga na traženje parkinga! Naša aplikacija
+                            vam omogućava pristup realnim informacijama o dostupnim mejstima u vašoj blizini,
+                            brzo plaćanje i podsjećanja na istekao parking. Uživajte u slobodnom i
+                            organiziranom parkiranju uz našu pomoć.
                         </p>
                     </div>
                     <div className="info-box-image">
@@ -58,12 +58,12 @@ export default function HeroHomeComponent() {
                 <div className='info-box'>
                     <div className='info-box-text'>
                         <h1>
-                            Pouzdan pratilac na putu do slobodnog parkinga
+                            Pouzdan pratitelj na putu do slobodnog parkinga
                         </h1>
                         <p>
-                            Bilo da ste u centru grada ili u prometnim delovima, naša aplikacija je vaš saveznik
-                            u potrazi za parkingom. Rezervišite mesto unapred, pratite vreme parkiranja i uvek
-                            budite korak ispred drugih. Parkiranje nikad nije bilo lakše i sigurnije!
+                            Bilo da ste u centru grada ili u prometnim dijelovima, naša aplikacija je vaš saveznik
+                            u potrazi za parkingom. Rezervirajte mjesto unaprijed, pratite vrijeme parkiranja i uvijek
+                            budite korak ispred drugih. Parkiranje nikada nije bilo lakše i sigurnije!
                         </p>
                     </div>
                     <div className="info-box-image">
@@ -76,8 +76,8 @@ export default function HeroHomeComponent() {
                             Brzo, sigurno i bezbrižno parkiranje
                         </h1>
                         <p>
-                            Vaša sigurnost i praktičnost su naš prioritet! Pronađite slobodna parking mesta,
-                            rezervišite ih i platite bez čekanja. Naša aplikacija vam omogućava da lako
+                            Vaša sigurnost i praktičnost su naš prioritet! Pronađite slobodna parking mjesta,
+                            rezervirajte ih i platite bez čekanja. Naša aplikacija vam omogućava da lako
                             upravljate svim aspektima parkiranja kako biste uživali u svakom trenutku svoje
                             vožnje.
                         </p>

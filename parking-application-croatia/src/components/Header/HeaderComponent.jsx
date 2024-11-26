@@ -5,15 +5,13 @@ import Store from '../../store/Store';
 import { observer } from 'mobx-react-lite';
 
 const HeaderComponent = observer(() => {
-  const [admin, setAdmin] = useState(false)
   const [userModal, setUserModal] = useState(false);
-
- useEffect(() => {
-   Store.fetchProfileImage()
-  }, [Store.profileImage])
 
   const toggleUserModal = () => {
     setUserModal(!userModal);
+    if(Store.user !== null) {
+      Store.fetchUserById(Store.user.id)
+    }
   }
 
   return (
@@ -48,7 +46,7 @@ const HeaderComponent = observer(() => {
               Parking
             </div>
           </Link>
-          {admin && (<>
+          {Store.user.role === 'admin' && (<>
             <Link to="/admin" className='user-item'>
               <div>
                 Admin
