@@ -462,8 +462,8 @@ app.get("/fines/:id", (req, res) => {
     const { id } = req.params;
 
     db.query(
-        "SELECT DISTINCT fine.* FROM fine LEFT JOIN user ON fine.license_plate = user.licenseplate OR fine.license_plate = user.spareplate LEFT JOIN adminreceipt ON fine.license_plate = adminreceipt.license_plate WHERE (user.id = ? OR adminreceipt.license_plate IS NOT NULL);",
-        [id],
+        "SELECT DISTINCT fine.* FROM fine LEFT JOIN user ON fine.license_plate = user.licenseplate OR fine.license_plate = user.spareplate LEFT JOIN adminreceipt ON fine.license_plate = adminreceipt.license_plate WHERE (user.id = ? OR adminreceipt.user_id = ?);",
+        [id, id],
         (err, results) => {
             if (err) {
                 console.error("Database error:", err);
