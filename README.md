@@ -6,18 +6,24 @@
 <p align="center">Parking application made with React, Node, express & MySQL.🖥️</p>
 
 <p align="center">Mobile responsive, minmalistic UI and great UX 📱🖥️</p>
+
 <p align="center">
 <img src="https://i.ibb.co/ThwY0Rt/1.png" />
 </p>
 
-For preview of the app run:
+<p align="center">For preview of the app run:
 1. npm install
 2. npm run dev
+</p>
 
-For backend run - node service.js - in src/services:
-   
+<p align="center">
+   For backend run - node service.js - in src/services:
+</p>
+
+<p align="center">
 For production run:
 3. npm run build
+</p>
 
 <p align="center">
 <img src="https://i.ibb.co/VmgPXSX/11.png" />
