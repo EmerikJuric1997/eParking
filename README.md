@@ -5,7 +5,7 @@
 
 <p align="center">Parking application made with React, Node, express & MySQL.🖥️</p>
 
-Mobile responsive, minmalistic UI and great UX 📱🖥️
+<p align="center">Mobile responsive, minmalistic UI and great UX 📱🖥️</p>
 <p align="center">
 <img src="https://i.ibb.co/ThwY0Rt/1.png" />
 </p>
