@@ -47,6 +47,7 @@ class Store {
     totalSeconds = null;
     allUsers = null;
     allReceipts = null;
+    checkedReceipt = null;
     errors = {
         name: '',
         surname: '',
@@ -274,14 +275,6 @@ class Store {
             });
             await this.login();
             runInAction(() => {
-                if (navigate) {
-                    navigate(`/parking/${this.user.id}`);
-                }
-            })
-        } catch (error) {
-            runInAction(() => {
-                this.validateRegisterForm();
-                alert("Pogriješili ste u unosu podataka.");
                 this.errors = {
                     name: '',
                     surname: '',
@@ -290,6 +283,14 @@ class Store {
                     licensePlate: '',
                     licensePlateOptional: ''
                 };
+                if (navigate) {
+                    navigate(`/parking/${this.user.id}`);
+                }
+            })
+        } catch (error) {
+            runInAction(() => {
+                this.validateRegisterForm();
+                alert("Pogriješili ste u unosu podataka.");
             })
         }
     }
@@ -343,6 +344,7 @@ class Store {
             });
         } catch (error) {
             console.error("Failed to fetch user:", error);
+            localStorage.removeItem("user");
         }
     }
 
@@ -376,6 +378,7 @@ class Store {
             const response = await axios.get('http://localhost:5000/userplates', {
                 params: {
                     licensePlate: this.licensePlateSeach,
+                    sparePlate: this.licensePlateSeach,
                 },
             });
             runInAction(() => {
@@ -467,24 +470,24 @@ class Store {
     //Function for parking payment
     parkingPayment = async () => {
         try {
-                const cuurentDate = new Date();
-                const year = cuurentDate.getFullYear();
-                const month = String(cuurentDate.getMonth() + 1).padStart(2, '0');
-                const day = String(cuurentDate.getDate()).padStart(2, '0');
-                const hours = String(cuurentDate.getHours()).padStart(2, '0');
-                const minutes = String(cuurentDate.getMinutes()).padStart(2, '0');
-                const seconds = String(cuurentDate.getSeconds()).padStart(2, '0');
-                const date = new Date();
-                date.setHours(date.getHours() + (this.hour));
-                date.setMinutes(date.getMinutes() + this.minute);
-                const dateAdd = new Date();
-                dateAdd.setHours(dateAdd.getHours() + (Number(this.hour) + Number(this.timerHour)));
-                dateAdd.setMinutes(dateAdd.getMinutes() + (Number(this.minute) + Number(this.timerMinute)));
-                const formattedCurrentDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-                const formattedDateAdd = `${dateAdd.getFullYear()}-${String(dateAdd.getMonth() + 1).padStart(2, '0')}-${String(dateAdd.getDate()).padStart(2, '0')} ${String(dateAdd.getHours()).padStart(2, '0')}:${String(dateAdd.getMinutes()).padStart(2, '0')}:${String(dateAdd.getSeconds()).padStart(2, '0')}`;
-                const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
-                this.updateSparePlate(this.platePayment);
-                this.postAdminReceipts(formattedCurrentDate, formattedDate);
+            const cuurentDate = new Date();
+            const year = cuurentDate.getFullYear();
+            const month = String(cuurentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(cuurentDate.getDate()).padStart(2, '0');
+            const hours = String(cuurentDate.getHours()).padStart(2, '0');
+            const minutes = String(cuurentDate.getMinutes()).padStart(2, '0');
+            const seconds = String(cuurentDate.getSeconds()).padStart(2, '0');
+            const date = new Date();
+            date.setHours(date.getHours() + (this.hour));
+            date.setMinutes(date.getMinutes() + this.minute);
+            const dateAdd = new Date();
+            dateAdd.setHours(dateAdd.getHours() + (Number(this.hour) + Number(this.timerHour)));
+            dateAdd.setMinutes(dateAdd.getMinutes() + (Number(this.minute) + Number(this.timerMinute)));
+            const formattedCurrentDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            const formattedDateAdd = `${dateAdd.getFullYear()}-${String(dateAdd.getMonth() + 1).padStart(2, '0')}-${String(dateAdd.getDate()).padStart(2, '0')} ${String(dateAdd.getHours()).padStart(2, '0')}:${String(dateAdd.getMinutes()).padStart(2, '0')}:${String(dateAdd.getSeconds()).padStart(2, '0')}`;
+            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+            this.updateSparePlate(this.platePayment);
+            this.postAdminReceipts(formattedCurrentDate, formattedDate);
             if (this.lastReceipt) {
                 const dateExpireDb = new Date(this.lastReceipt.expire_date);
                 const dateNow = new Date();
@@ -557,6 +560,14 @@ class Store {
                 licensePlate: plate.toUpperCase(),
                 zone: zone
             });
+            await axios.post('http://localhost:5000/allreceipts', {
+                receiptDate: formattedCurrentDate,
+                expireDate: formattedDateAdd,
+                price: price,
+                userId: this.user.id,
+                licensePlate: plate.toUpperCase(),
+                zone: zone
+            });
             runInAction(() => {
                 this.totalSeconds = 0;
                 this.fetchLastReceipt();
@@ -608,7 +619,7 @@ class Store {
                     this.userFines = response.data.fines;
                 });
             } catch (error) {
-                console.error("Failed to fetch fines:", error.response?.data || error.message);
+                console.log("Failed to fetch fines:", error.response?.data || error.message);
             }
         }
     }
@@ -619,7 +630,7 @@ class Store {
             try {
                 const response = await axios.get(`http://localhost:5000/receipt/${this.user.id}`);
                 runInAction(() => {
-                this.lastReceipt = response.data.receipts[0];
+                    this.lastReceipt = response.data.receipts[0];
                     if (this.lastReceipt) {
                         runInAction(() => {
                             const currentDate = new Date();
@@ -819,8 +830,24 @@ class Store {
         }, 1000);
     }
 
-    //Function to check is the fine payed, if not write a payment 
-    async validateParkingPayment(cameraCheckPlate, zone) {
+    //Function to check is the camera plate exist
+    async checkReceipt(cameraCheckPlate) {
+        try {
+            const response = await axios.get('http://localhost:5000/checkreceipt', {
+                params: {
+                    licensePlate: cameraCheckPlate
+                },
+            });
+            runInAction(() => {
+                this.checkedReceipt = response.data.receipt;
+            });
+        } catch (error) {
+            console.log("tablica ne postoji", error)
+        }
+    }
+
+    //Function to check is the camera plate is payed
+    async validatePlate(cameraCheckPlate, zone) {
         try {
             const response = await axios.get('http://localhost:5000/validatepayment', {
                 params: {
@@ -828,20 +855,71 @@ class Store {
                     zone: zone,
                 },
             });
-            runInAction(() => {
-                this.paidReceipt = response.data.receipt;
-                alert("Karta je placena.", this.paidReceipt);
-            });
-        } catch (error) {
-            const response = await axios.post('http://localhost:5000/fine', {
-                fineDate: this.currentDate,
-                price: 10,
-                licensePlate: cameraCheckPlate,
-                zone: zone,
-            });
-            alert("Kazna naplacena.")
+            this.paidReceipt = response.data.receipt;
+        }
+        catch (error) {
+            this.paidReceipt = null;
         }
     }
+
+    //Function to check is the fine payed, if not write a payment 
+    async validateParkingPayment(cameraCheckPlate, zone) {
+        try {
+            await this.checkReceipt(cameraCheckPlate);
+            
+            if (this.checkedReceipt !== null) {
+                await this.validatePlate(cameraCheckPlate, zone);
+                
+                if (this.paidReceipt !== null) {
+                    alert("Karta je plaćena.", this.paidReceipt);
+                } else {
+                    const currentDate = new Date();
+                    const year = currentDate.getFullYear();
+                    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(currentDate.getDate()).padStart(2, '0');
+                    const hours = String(currentDate.getHours()).padStart(2, '0');
+                    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+                    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+                    
+                    const dateAdd = new Date();
+                    dateAdd.setHours(dateAdd.getHours() + 24);
+                    
+                    const formattedCurrentDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+                    const formattedDateAdd = `${dateAdd.getFullYear()}-${String(dateAdd.getMonth() + 1).padStart(2, '0')}-${String(dateAdd.getDate()).padStart(2, '0')} ${String(dateAdd.getHours()).padStart(2, '0')}:${String(dateAdd.getMinutes()).padStart(2, '0')}:${String(dateAdd.getSeconds()).padStart(2, '0')}`;
+                    
+                    await axios.post('http://localhost:5000/fine', {
+                        fineDate: formattedCurrentDate,
+                        price: 10,
+                        licensePlate: cameraCheckPlate,
+                        zone: zone,
+                    });
+                    
+                    await axios.post('http://localhost:5000/pay', {
+                        receiptDate: formattedCurrentDate,
+                        expireDate: formattedDateAdd,
+                        price: 0,
+                        userId: this.checkedReceipt.user_id,
+                        licensePlate: cameraCheckPlate.toUpperCase(),
+                        zone: zone,
+                    });
+                    
+                    await axios.post('http://localhost:5000/allreceipts', {
+                        receiptDate: formattedCurrentDate,
+                        expireDate: formattedDateAdd,
+                        price: 0,
+                        userId: this.checkedReceipt.user_id,
+                        licensePlate: cameraCheckPlate.toUpperCase(),
+                        zone: zone,
+                    });
+                    
+                    alert("Kazna naplaćena.");
+                }
+            }
+        } catch (error) {
+            console.log("Tablica ne postoji.", error);
+        }
+    }
+    
 }
 
 export default new Store();

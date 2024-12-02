@@ -39,6 +39,16 @@ const UserComponent = observer(() => {
     const changeInput = () => {
         setIsActive(!isActive)
     }
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
 
     return (
         <>
@@ -81,15 +91,15 @@ const UserComponent = observer(() => {
                                         <th>Datum</th>
                                         <th>Registracija</th>
                                         <th>Zona</th>
-                                        <th>Vrijeme</th>
+                                        <th>Trajanje</th>
                                         <th>Uredi</th>
                                     </tr>
                                     {Store.userReceipts.map(receipt => (
                                         <tr key={receipt.id}>
-                                            <td>{receipt.receipt_date}</td>
+                                            <td>{formatDate(receipt.receipt_date)}</td>
                                             <td>{receipt.license_plate}</td>
                                             <td>{receipt.zone}</td>
-                                            <td>{receipt.expire_date}</td>
+                                            <td>{formatDate(receipt.expire_date)}</td>
                                             <td>{new Date(receipt.expire_date) < new Date() &&
                                                 <button onClick={() => Store.deleteReceipt(receipt.id)} className='table-component-button-delete'>Obriši</button>}</td>
                                         </tr>
@@ -113,7 +123,7 @@ const UserComponent = observer(() => {
                                     </tr>
                                     {Store.userFines.map(fine => (
                                         <tr key={fine.id}>
-                                            <td>{fine.fine_date}</td>
+                                            <td>{formatDate(fine.fine_date)}</td>
                                             <td>{fine.license_plate}</td>
                                             <td>{fine.zone}</td>
                                             <td>{fine.price} €</td>

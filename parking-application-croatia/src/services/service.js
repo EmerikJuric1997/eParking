@@ -197,8 +197,8 @@ app.get("/totalincome", (req, res) => {
 
 //Route for getting all users with the specific license plate
 app.get("/userplates", (req, res) => {
-    const { licensePlate } = req.query;
-    db.query("SELECT * FROM user WHERE licenseplate = ?", [licensePlate], (err, results) => {
+    const { licensePlate, sparePlate } = req.query;
+    db.query("SELECT * FROM user WHERE licenseplate = ? OR spareplate = ? LIMIT 1;", [licensePlate, sparePlate], (err, results) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ message: "Server error" });
@@ -418,6 +418,29 @@ app.get("/validatepayment", (req, res) => {
     db.query(
         "SELECT * FROM receipt WHERE license_plate = ? AND expire_date > CURRENT_TIMESTAMP AND zone = ? LIMIT 1;",
         [licensePlate, zone],
+        (err, results) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ message: "Server error" });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ message: "Receipt not found" });
+            }
+
+            const receipt = results[0];
+            res.status(200).json({ message: "Receipt read successfully", receipt });
+        }
+    );
+});
+
+//Route for checking if the last receipt is still valid
+app.get("/checkreceipt", (req, res) => {
+    const { licensePlate } = req.query;
+
+    db.query(
+        "SELECT * FROM receipt WHERE license_plate = ? ORDER BY receipt_date LIMIT 1;",
+        [licensePlate],
         (err, results) => {
             if (err) {
                 console.error("Database error:", err);

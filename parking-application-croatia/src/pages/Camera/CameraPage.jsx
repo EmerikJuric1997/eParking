@@ -60,7 +60,7 @@ const CameraPage = observer(() => {
 
       const cleanedText = cleanLicensePlate(text.trim());
       if (cleanedText) {
-        const cameraCheckPlate = cleanedText;
+        const cameraCheckPlate = cleanedText.toUpperCase();
         const zone = 1;
         Store.validateParkingPayment(cameraCheckPlate, zone)
       }
